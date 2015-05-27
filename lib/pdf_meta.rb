@@ -16,7 +16,7 @@ require "pdf_meta/results"
 
 
 module PDFMeta
-  PopplerMissing              = Class.new(StandardError)
+  PopplerMissingError         = Class.new(StandardError)
   UnknownError                = Class.new(StandardError)
   UnableToReadFileError       = Class.new(StandardError)
   UnableOpenOutputFileError   = Class.new(StandardError)
@@ -32,11 +32,17 @@ module PDFMeta
   end
 
   def configure &block
-    yield(config)
+    reset!
+    yield(config) if block_given?
+  end
+
+  def reset!
+    @config    = nil
+    @available = nil
   end
 
   def read(file)
-    raise PopplerMissing unless available?
+    raise PopplerMissingError unless available?
     out = case file
       when File then file.path
       else file
