@@ -2,7 +2,6 @@ require "active_support"
 require "active_support/core_ext"
 require "virtus"
 require "open3"
-require "pry"
 
 require "pdf_meta/version"
 
