@@ -1,10 +1,18 @@
-# PdfMeta
+# PDFMeta
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pdf_meta`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+PDFMeta is a gem designed to resiliantly return metadata from a PDF, using poppler/xpdf command line tools
 
 ## Installation
+
+Install the poppler command line tools:
+
+###OSX
+
+`brew install poppler`
+
+###Debian Based
+
+`apt-get install poppler-utils`
 
 Add this line to your application's Gemfile:
 
@@ -20,9 +28,34 @@ Or install it yourself as:
 
     $ gem install pdf_meta
 
+## Configuration
+
+You shouldn't need to configure the gem, however if you've installed pdfinfo in a custom location then pass it here
+
+```ruby
+PDFMeta.configure do |config|
+  config[:command_path] = '/path/to/pdfinfo' #=> Default is just 'pdfinfo' in path
+end
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+There's only one call to the API, it takes either a string path to a file, or an open file handle
+
+```ruby
+PDFMeta.read('path/to/file')
+
+PDFMeta.read(File.open('path/to/file'))
+```
+
+It will return either a `PDFMeta::Results` or raise one of the following errors:
+  - `PopplerMissingError`
+  - `UnknownError`
+  - `UnableToReadFileError`
+  - `UnableOpenOutputFileError`
+  - `PDFPermissionError`
+  - `UnknownPopplerError`
+
 
 ## Development
 
@@ -32,7 +65,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/pdf_meta/fork )
+1. Fork it ( https://github.com/boardiq/pdf_meta/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
