@@ -1,8 +1,49 @@
 require 'spec_helper'
 
 describe 'parser' do
+  let(:output) { "" }
+  let(:parser) { PDFMeta::Parser.new(output) }
 
-  let(:output) do
+  describe 'with incomplete data' do
+    let(:output) do
+<<-EOF
+Title:          Hello: This is a test with a colon
+Author:
+Creator:        Adobe InDesign CS5.5 (7.5.1)
+Producer:
+CreationDate:   Thu Sep 12 00:20:46 2013
+ModDate:        Thu Sep 12 00:22:14 2013
+Tagged:         no
+UserProperties: no
+Suspects:       no
+Form:           none
+JavaScript:     no
+Pages:          1
+Encrypted:      no
+Page size:      269.291 x 269.291 pts
+Page rot:       0
+File size:      470135 bytes
+Optimized:      no
+PDF version:    1.7
+EOF
+    end
+
+    it 'should parse into a results object' do
+      parser.results.must_be_instance_of PDFMeta::Results
+    end
+
+    it 'should have a nil author' do
+      parser.results.author.must_be_nil
+    end
+
+    it 'should have a nil producer' do
+      parser.results.producer.must_be_nil
+    end
+
+  end
+
+  describe 'with complete data' do
+    let(:output) do
 <<-EOF
 Title:          Hello: This is a test with a colon
 Author:         Apple Inc.
@@ -23,15 +64,15 @@ File size:      470135 bytes
 Optimized:      no
 PDF version:    1.7
 EOF
-  end
-  let(:parser) { PDFMeta::Parser.new(output) }
+    end
 
-  it 'should parse into a results object' do
-    parser.results.must_be_instance_of PDFMeta::Results
-  end
+    it 'should parse into a results object' do
+      parser.results.must_be_instance_of PDFMeta::Results
+    end
 
-  it 'should make the title available' do
-    parser.results.title.must_equal "Hello: This is a test with a colon"
+    it 'should make the title available' do
+      parser.results.title.must_equal "Hello: This is a test with a colon"
+    end
   end
 
 end

@@ -17,7 +17,7 @@ module PDFMeta
       out = out.each do |row|
         hash[row.first.underscore.parameterize.underscore.to_sym] = row.last.strip
       end
-      hash
+      hash.reject {|k, v| v.blank?}
     end
 
   end
