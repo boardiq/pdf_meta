@@ -42,6 +42,39 @@ EOF
 
   end
 
+  describe 'with extra linebreaks' do
+    let(:output) do
+<<-EOF
+Title:          CC29 Conflicts of interest A guide for charity trustees
+Subject:        A PDF, print friendly version of our online guidance, setting out what trustees need to do to identify and respond to any conflicts of interest which come up at their charity.
+
+Author:         Charity Commission
+Creator:        Adobe InDesign CS5.5 (7.5.3)
+Producer:       GPL Ghostscript 9.15
+CreationDate:   Thu Jul  2 09:00:44 2015
+ModDate:        Thu Jul  2 09:00:44 2015
+Tagged:         no
+UserProperties: no
+Suspects:       no
+Form:           none
+JavaScript:     no
+Pages:          32
+Encrypted:      no
+Page size:      595.276 x 841.89 pts (A4)
+Page rot:       0
+File size:      317730 bytes
+Optimized:      no
+PDF version:    1.5
+EOF
+    end
+
+    it 'should parse into a results object' do
+      parser.results.must_be_instance_of PDFMeta::Results
+    end
+
+  end
+
+
   describe 'with complete data' do
     let(:output) do
 <<-EOF

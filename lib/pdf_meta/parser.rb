@@ -12,7 +12,7 @@ module PDFMeta
     private
 
     def parsed_output
-      out = @output.split("\n").map {|x| x.split(':', 2)}
+      out = @output.split("\n").map {|x| x.split(':', 2)}.reject(&:empty?)
       hash = {}
       out = out.each do |row|
         hash[row.first.underscore.parameterize.underscore.to_sym] = row.last.strip
